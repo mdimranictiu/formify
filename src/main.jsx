@@ -4,6 +4,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from "./Root/Root";
 import ErrorPage from "./ErrorPage/ErrorPage";
+import { FormBuilderProvider } from "./Context/FormBuilderContext";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -13,6 +14,9 @@ const router = createBrowserRouter([
 ]);
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+     <FormBuilderProvider>
+     <RouterProvider router={router} />
+    </FormBuilderProvider>
+  
   </StrictMode>
 );
