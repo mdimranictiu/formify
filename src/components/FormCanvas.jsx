@@ -1,38 +1,117 @@
-import React from 'react';
-import { Droppable } from '@hello-pangea/dnd';
+import React, { useContext } from 'react';
+import { Droppable, Draggable } from '@hello-pangea/dnd';
+import { FormBuilderContext } from '../Context/FormBuilderContext';
 
-const FormCanvas = ({ fields }) => {
-    console.log('fromCanvas',fields)
+const FormCanvas = () => {
+  const { fieldsets,selectedFieldsetId,SetPropertiesPanelShow, setSelectedFieldsetId } = useContext(FormBuilderContext);
+console.log(fieldsets)
+console.log(selectedFieldsetId)
+const handleSelect=(id)=>{
+  setSelectedFieldsetId(id)
+  SetPropertiesPanelShow(true)
+}
   return (
-    <Droppable droppableId="FORM_CANVAS">
-      {(provided) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.droppableProps}
-          className="min-h-[300px] border-2 border-dashed border-gray-400 rounded-lg p-4"
-        >
-          <h2 className="text-lg font-semibold mb-3">Form Preview</h2>
-          {fields.map((field, index) => (
-            <div key={field.id} className="p-2 mb-2 bg-white shadow rounded text-left">
-              <label className="block text-sm font-medium">{field.label}</label>
-              {field.type === "text" && <input type="text" className="mt-1 w-full border rounded px-2 py-1" />}
-              {field.type === "number" && <input type="number" className="mt-1 w-full border rounded px-2 py-1" />}
-              {field.type === "textarea" && <textarea className="mt-1 w-full border rounded px-2 py-1" />}
-              {field.type === "select" && (
-                <select className="mt-1 w-full border rounded px-2 py-1">
-                  <option>Option 1</option>
-                  <option>Option 2</option>
-                </select>
-              )}
-              {field.type === "checkbox" && <input type="checkbox" className="mt-1" />}
-              {field.type === "radio" && <input type="radio" className="mt-1" />}
-              {field.type === "date" && <input type="date" className="mt-1 w-full border rounded px-2 py-1" />}
-            </div>
-          ))}
-          {provided.placeholder}
+    <div>
+      {/* Drop zone to create new Fieldset */}
+      <Droppable droppableId="FORM_CANVAS">
+        {(provided) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className="p-4 mb-4 border-dashed border-2 border-gray-300 rounded bg-white"
+          >
+            <p className="text-gray-400">Drop a field here to start</p>
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+
+      {/* Existing Fieldsets */}
+      {fieldsets?.map((fieldset) => (
+        <Droppable droppableId={fieldset.id}  key={fieldset.id}>
+          {(provided) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps} onClick={()=>handleSelect(fieldset.id)}
+              className="bg-red-500 p-4 mb-4  border rounded shadow"
+            >
+              <h3 className="text-md font-semibold mb-2">{fieldset.name}</h3>
+              {fieldset.fields.map((field, index) => (
+                <Draggable key={field.id} draggableId={field.id} index={index}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      className="p-2 bg-gray-100 rounded mb-2 shadow-sm"
+                    >
+
+<div className="flex justify-center py-2">
+  <div className="flex flex-col gap-2 items-start w-full max-w-md p-4 bg-white rounded-xl shadow-md">
+    <label className="text-sm font-medium text-gray-700">
+      {field?.label}
+    </label>
+
+    {field?.type === 'text' || field?.type === 'number' || field?.type === 'date' ? (
+      <input
+        type={field?.type}
+        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200"
+        placeholder={`Enter ${field?.label?.toLowerCase()}`}
+      />
+    ) : field?.type === 'textarea' ? (
+      <textarea
+        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200"
+        placeholder={`Enter ${field?.label?.toLowerCase()}`}
+        rows={4}
+      />
+    ) : field?.type === 'select' ? (
+      <select
+        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200"
+      >
+        <option value="">Select {field?.label}</option>
+        <option value="option1">Option 1</option>
+        <option value="option2">Option 2</option>
+        <option value="option3">Option 3</option>
+      </select>
+    ) : field?.type === 'checkbox' ? (
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          id={field.id}
+          className="w-4 h-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+        />
+        <label htmlFor={field.id} className="text-sm text-gray-700">
+          {field?.label}
+        </label>
+      </div>
+    ) : field?.type === 'radio' ? (
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-2">
+          <input type="radio" name={field.id} value="option1" />
+          <span className="text-sm text-gray-700">Option 1</span>
         </div>
-      )}
-    </Droppable>
+        <div className="flex items-center gap-2">
+          <input type="radio" name={field.id} value="option2" />
+          <span className="text-sm text-gray-700">Option 2</span>
+        </div>
+      </div>
+    ) : (
+      <p className="text-sm text-red-500">Unknown field type</p>
+    )}
+  </div>
+</div>
+
+
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      ))}
+    </div>
   );
 };
 
