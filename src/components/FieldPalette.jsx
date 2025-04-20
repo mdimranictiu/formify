@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import { FormBuilderContext } from '../Context/FormBuilderContext';
-import { Draggable, Droppable } from '@hello-pangea/dnd';
-import { MdTextFields } from 'react-icons/md';
+import React, { useContext } from "react";
+import { FormBuilderContext } from "../Context/FormBuilderContext";
+import { Draggable, Droppable } from "@hello-pangea/dnd";
+import { MdTextFields } from "react-icons/md";
 
 const FieldPalette = () => {
   const { fieldTypes } = useContext(FormBuilderContext);
@@ -11,11 +11,19 @@ const FieldPalette = () => {
       <h2 className="text-lg font-bold mb-4 text-white">Fields</h2>
       <Droppable droppableId="FIELD_PALETTE" isDropDisabled={true}>
         {(provided) => (
-          <div ref={provided.innerRef} {...provided.droppableProps} className="space-y-2">
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className="space-y-2"
+          >
             {Object.entries(fieldTypes).map(([key, field], index) => {
               const Icon = field.icon || MdTextFields;
               return (
-                <Draggable key={field.type} draggableId={field.type} index={index}>
+                <Draggable
+                  key={field.type}
+                  draggableId={field.type}
+                  index={index}
+                >
                   {(provided) => (
                     <div
                       ref={provided.innerRef}
