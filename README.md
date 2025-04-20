@@ -45,7 +45,7 @@ Once the form is complete, users can save the form to instantly generate a clean
 - **Axios** – For HTTP requests  
 - **Custom Context API** – For State Management 
 
-## 💥 Challenges
+##  Challenges
 
 - **Real-Time Updates**: Managed dynamic field and fieldset updates without breaking the UI or data consistency.
 - **Unique Fieldset Names**: Ensured unique names for each fieldset, especially when duplicating, by appending copy numbers.
@@ -57,7 +57,7 @@ Once the form is complete, users can save the form to instantly generate a clean
   ---
 
 
-## 📦 Dependencies  
+##  Dependencies  
 The project uses the following npm packages:  
 ```
 @eslint
