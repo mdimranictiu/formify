@@ -20,7 +20,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="flex items-center gap-5">
-        <p className="text-gray-400">Changed Saved 2 mins ago</p>
+        <p className="text-gray-400">Changed Saved 2 sec ago</p>
         <p>
           <FiEye></FiEye>
         </p>
