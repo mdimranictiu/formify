@@ -18,7 +18,6 @@ Once the form is complete, users can save the form to instantly generate a clean
 - [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Challenges](#Challenges)
-- [ProjectStructure](#Project Structure)
 - [Dependencies used](#dependencies-used)
 - [Installation](#installation)
 
@@ -56,28 +55,6 @@ Once the form is complete, users can save the form to instantly generate a clean
 
 
   ---
-##  Project Structure
-├── **public/**
-│   ├── assets/               # Static assets like images and icons
-│   └── index.html            # Main HTML file
-│
-├── **src/**
-│   ├── **components/**       # Reusable components (e.g., FieldPalette, FormCanvas)
-│   │   ├── FieldPalette.js   # Drag-and-drop field options
-│   │   ├── FormCanvas.js     # Canvas where form fields are dropped
-│   │   └── PropertiesPanel.js # Panel to modify field properties
-│   ├── **context/**          # Context for global state (e.g., FormBuilderContext)
-│   │   └── FormBuilderContext.js
-│   ├── **Root/**            # Pages of the app (e.g., Home)
-│   │   └── Root.jsx
-│  
-│
-├── **styles/**               
-│   └── index.css           
-│
-├── package.json             
-└── README.md                 
-
 
 
 ## 📦 Dependencies  
