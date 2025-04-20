@@ -41,6 +41,31 @@ export const FormBuilderProvider = ({ children }) => {
     setfieldsets(updatedFieldsets);
   };
 
+  const addOptionToField = (fieldsetId, fieldId, newOption) => {
+    const updatedFieldsets = fieldsets.map((fieldset) => {
+      if (fieldset.id === fieldsetId) {
+        const updatedFields = fieldset.fields.map((field) => {
+          if (field.id === fieldId && (field.type === "radio" || field.type === "select")) {
+            return {
+              ...field,
+              options: [...(field.options || []), newOption],
+            };
+          }
+          return field;
+        });
+  
+        return {
+          ...fieldset,
+          fields: updatedFields,
+        };
+      }
+      return fieldset;
+    });
+  
+    setfieldsets(updatedFieldsets);
+  };
+  
+
 
   console.log('from context',fieldsets)
   const handleDeleteFieldset=(id)=>{
@@ -48,12 +73,40 @@ export const FormBuilderProvider = ({ children }) => {
     setfieldsets(remainFieldSets)
     SetPropertiesPanelShow(false)
     }
+    const handleApplyEdit = (updatedField) => {
+      const cleanedOptions = updatedField.options?.filter(opt => opt.trim() !== "") || [];
+    
+      const updatedFieldWithCleanOptions = {
+        ...updatedField,
+        options: cleanedOptions,
+      };
+    
+      const updatedFieldsets = fieldsets.map((fs) => {
+        if (fs.id === selectedFieldsetId) {
+          return {
+            ...fs,
+            fields: fs.fields.map((field) =>
+              field.id === updatedField.id ? updatedFieldWithCleanOptions : field
+            ),
+          };
+        }
+        return fs;
+      });
+    
+      setfieldsets(updatedFieldsets);
+    };
+    const handleApplyFieldsetName = (fieldsetName) => {
+      const updatedFieldsets = fieldsets.map((fs) =>
+        fs.id === selectedFieldsetId ? { ...fs, name: fieldsetName } : fs
+      );
+      setfieldsets(updatedFieldsets);
+    };
   return (
     <FormBuilderContext.Provider
       value={{
-        fields,handleDeleteFieldset,
+        fields,handleDeleteFieldset,handleApplyEdit,
         setFields,deleteFieldFromFieldset,SetPropertiesPanelShow,PropertiesPanelShow,
-       fieldTypes,fieldsets,setfieldsets,selectedFieldsetId, setSelectedFieldsetId
+       fieldTypes,fieldsets,setfieldsets,selectedFieldsetId, setSelectedFieldsetId,addOptionToField,handleApplyFieldsetName
       }}
     >
       {children}

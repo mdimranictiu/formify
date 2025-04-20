@@ -33,7 +33,7 @@ const handleSelect=(id)=>{
             <div
               ref={provided.innerRef}
               {...provided.droppableProps} onClick={()=>handleSelect(fieldset.id)}
-              className="bg-red-500 p-4 mb-4  border rounded shadow"
+              className=" p-4 mb-4  border rounded shadow"
             >
               <h3 className="text-md font-semibold mb-2">{fieldset.name}</h3>
               {fieldset.fields.map((field, index) => (
@@ -68,10 +68,11 @@ const handleSelect=(id)=>{
       <select
         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200"
       >
-        <option value="">Select {field?.label}</option>
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
+  {(field?.options || []).map((option, idx) => (
+    <option key={idx} value={option}>
+      {option}
+    </option>
+  ))}
       </select>
     ) : field?.type === 'checkbox' ? (
       <div className="flex items-center gap-2">
@@ -86,15 +87,13 @@ const handleSelect=(id)=>{
       </div>
     ) : field?.type === 'radio' ? (
       <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-2">
-          <input type="radio" name={field.id} value="option1" />
-          <span className="text-sm text-gray-700">Option 1</span>
+      {(field?.options || []).map((option, idx) => (
+        <div key={idx} className="flex items-center gap-2">
+          <input type="radio" name={field.id} value={option} />
+          <span className="text-sm text-gray-700">{option}</span>
         </div>
-        <div className="flex items-center gap-2">
-          <input type="radio" name={field.id} value="option2" />
-          <span className="text-sm text-gray-700">Option 2</span>
-        </div>
-      </div>
+      ))}
+    </div>
     ) : (
       <p className="text-sm text-red-500">Unknown field type</p>
     )}
