@@ -13,6 +13,7 @@ export const FormBuilderProvider = ({ children }) => {
   const [selectedFieldsetId, setSelectedFieldsetId] = useState(null);
   const [fieldsets, setfieldsets] = useState([]);
   const [PropertiesPanelShow, SetPropertiesPanelShow] = useState(false);
+  const [err,setErr]=useState('')
 
   const fieldTypes = {
     text: { type: "text", label: "Text Input", icon: MdTextFields },
@@ -109,16 +110,64 @@ export const FormBuilderProvider = ({ children }) => {
   };
   // to handle fieldset name
   const handleApplyFieldsetName = (fieldsetName) => {
+    if (!fieldsetName.trim()) {
+      setErr("Fieldset name cannot be empty!");
+      return;
+    }
+  
+    const isDuplicate = fieldsets.some(
+      (fs) =>
+        fs.name.trim().toLowerCase() === fieldsetName.trim().toLowerCase() &&
+        fs.id !== selectedFieldsetId
+    );
+  
+    if (isDuplicate) {
+      setErr("A fieldset with this name already exists! Please choose a different name.");
+      return;
+    }
+  
     const updatedFieldsets = fieldsets.map((fs) =>
       fs.id === selectedFieldsetId ? { ...fs, name: fieldsetName } : fs
     );
+  
     setfieldsets(updatedFieldsets);
   };
+  
   // to discard all fieldsets
   const handleDiscard = () => {
     setfieldsets([]);
     SetPropertiesPanelShow(false);
   };
+  // copy a fieldset
+  const handleCopyFieldset = (fieldsetId) => {
+    const fieldsetToCopy = fieldsets.find((fs) => fs.id === fieldsetId);
+    if (!fieldsetToCopy) return;
+  
+    const baseName = fieldsetToCopy.name.replace(/ Copy \d+$/, '');
+  
+
+    const existingCopies = fieldsets.filter(fs =>
+      fs.name.startsWith(baseName + ' Copy')
+    ).length;
+  
+    const newCopyName = `${baseName} Copy ${existingCopies + 1}`;
+  
+    const copiedFields = fieldsetToCopy.fields.map((field) => ({
+      ...field,
+      id: Date.now().toString() + Math.random(), 
+    }));
+  
+    const newFieldset = {
+      id: `fieldset-${Date.now()}`,
+      name: newCopyName,
+      fields: copiedFields,
+    };
+  
+    setfieldsets((prev) => [...prev, newFieldset]);
+  };
+  setTimeout(() => {
+    setErr('')
+  }, 5000);
   return (
     <FormBuilderContext.Provider
       value={{
@@ -126,8 +175,8 @@ export const FormBuilderProvider = ({ children }) => {
         handleDeleteFieldset,
         handleApplyEdit,
         handleDiscard,
-        setFields,
-        deleteFieldFromFieldset,
+        setFields,handleCopyFieldset,
+        deleteFieldFromFieldset,err,setErr,
         SetPropertiesPanelShow,
         PropertiesPanelShow,
         fieldTypes,

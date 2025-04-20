@@ -13,7 +13,7 @@ const PropertiesPanel = () => {
     fieldsets,
     selectedFieldsetId,
     setFieldsets,
-    setSelectedFieldsetId,
+    setSelectedFieldsetId,handleCopyFieldset,err,setErr
   } = useContext(FormBuilderContext);
   const selectedFieldset = fieldsets.find((fs) => fs.id === selectedFieldsetId);
   const [fields, setFields] = useState([]);
@@ -107,6 +107,19 @@ const PropertiesPanel = () => {
               >
                 Apply
               </button>
+            </div>
+            <div>
+
+  <button
+    onClick={() => handleCopyFieldset(selectedFieldsetId)}
+    className="btn w-full btn-soft bg-[#C27BFF] text-white hover:bg-white transition duration-200 hover:text-[#C27BFF]"
+  >
+    Copy
+  </button>
+
+            </div>
+            <div className="py-5">
+              {err && <p className="text-sm text-center text-red-500">{err}</p>}
             </div>
           </div>
         </div>

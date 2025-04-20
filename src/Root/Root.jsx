@@ -88,9 +88,9 @@ const Root = () => {
         >
           <PropertiesPanel />
           {fieldsets.length > 0 && (
-            <div className="relative">
-              <div className="absolute right-6">
-                <div className="p-2 gap-5 flex justify-between">
+
+              <div >
+                <div className="p-2 px-10 flex justify-between">
                   <button
                     onClick={handleDiscard}
                     className="btn hover:text-red-500 transition duration-500 hover:bg-white text-white bg-red-500 px-10"
@@ -105,14 +105,17 @@ const Root = () => {
                   </button>
                 </div>
               </div>
-            </div>
+
           )}
         </aside>
       </div>
 
       {/* Modal Section */}
-      <dialog id="my_modal_4" className="modal">
+      <dialog id="my_modal_4" className="modal modal-middle">
         <div className="modal-box w-11/12 text-start max-w-2xl">
+        <div>
+          <h2 className="text-xl text-center py-2 font-bold">Formify</h2>
+        </div>
           {returnData?.map((fieldset) => (
             <fieldset
               key={fieldset.id}
